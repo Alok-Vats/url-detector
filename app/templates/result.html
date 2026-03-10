@@ -11,6 +11,7 @@
       <span class="badge badge-{{ result.prediction }}">{{ result.prediction | upper }}</span>
     </p>
     <p><strong>Confidence:</strong> {{ "%.1f"|format(result.confidence * 100) }}%</p>
+    <p><strong>Detection Source:</strong> {{ result.model_source.replace('_', ' ') | title }}</p>
     {% if result.matched_list %}
       <p><strong>Matched List:</strong> {{ result.matched_list | title }}</p>
     {% endif %}
@@ -35,5 +36,6 @@
     </ul>
 
     <a class="button-link" href="{{ url_for('main.index') }}">Analyze another URL</a>
+    <a class="button-link button-link-secondary" href="{{ url_for('main.history') }}">View history</a>
   </section>
 {% endblock %}

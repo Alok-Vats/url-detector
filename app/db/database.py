@@ -24,6 +24,20 @@ CREATE TABLE IF NOT EXISTS whitelist_urls (
     note TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS scan_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    input_type TEXT NOT NULL,
+    input_value TEXT NOT NULL,
+    normalized_value TEXT NOT NULL,
+    prediction TEXT NOT NULL,
+    confidence REAL NOT NULL,
+    matched_list TEXT,
+    model_source TEXT NOT NULL,
+    reasons TEXT NOT NULL,
+    features TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 
@@ -63,6 +77,14 @@ def fetch_one(query: str, params: tuple = ()) -> sqlite3.Row | None:
     row = cursor.fetchone()
     cursor.close()
     return row
+
+
+def fetch_all(query: str, params: tuple = ()) -> list[sqlite3.Row]:
+    """Fetch all rows for a read query."""
+    cursor = get_db().execute(query, params)
+    rows = cursor.fetchall()
+    cursor.close()
+    return rows
 
 
 def execute_query(query: str, params: tuple = ()) -> None:

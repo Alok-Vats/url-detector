@@ -31,6 +31,18 @@ body {
   padding: 3rem 0 2rem;
 }
 
+.site-nav {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.site-nav a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .panel {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -65,6 +77,10 @@ button,
   cursor: pointer;
 }
 
+.button-link-secondary {
+  background: #34516f;
+}
+
 .alert {
   border-radius: 10px;
   padding: 0.8rem 1rem;
@@ -89,4 +105,27 @@ button,
 
 .badge-legitimate {
   background: var(--success);
+}
+
+.history-table-wrapper {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.history-table th,
+.history-table td {
+  padding: 0.85rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.history-url {
+  min-width: 260px;
+  word-break: break-word;
 }

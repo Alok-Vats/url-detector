@@ -26,6 +26,7 @@ def analyze_url(url: str) -> dict:
             details,
             matched_list="whitelist",
             matched_entry=whitelist_match,
+            model_source="whitelist",
         )
 
     if blacklist_match:
@@ -37,6 +38,7 @@ def analyze_url(url: str) -> dict:
             details,
             matched_list="blacklist",
             matched_entry=blacklist_match,
+            model_source="blacklist",
         )
 
     model_result = _predict_with_model(url)
@@ -52,11 +54,20 @@ def analyze_url(url: str) -> dict:
             details,
             matched_list=None,
             matched_entry=None,
+            model_source="ml_model",
         )
 
     risk_reasons = details["reasons"]
     if risk_reasons:
-        return _build_response(url, "phishing", 0.74, risk_reasons, details, matched_list=None)
+        return _build_response(
+            url,
+            "phishing",
+            0.74,
+            risk_reasons,
+            details,
+            matched_list=None,
+            model_source="heuristic",
+        )
 
     return _build_response(
         url,
@@ -65,6 +76,7 @@ def analyze_url(url: str) -> dict:
         ["No suspicious heuristic flags were detected in the initial scan."],
         details,
         matched_list=None,
+        model_source="heuristic",
     )
 
 
@@ -75,6 +87,7 @@ def _build_response(
     reasons: list[str],
     details: dict,
     matched_list: str | None,
+    model_source: str,
     matched_entry: dict | None = None,
 ) -> dict:
     """Format response payloads consistently for UI and API consumers."""
@@ -85,6 +98,7 @@ def _build_response(
         "reasons": reasons,
         "details": details,
         "matched_list": matched_list,
+        "model_source": model_source,
         "matched_entry": matched_entry,
     }
 

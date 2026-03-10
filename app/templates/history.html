@@ -4,7 +4,40 @@
 
 {% block content %}
   <section class="panel">
-    <h2>History</h2>
-    <p>Scan history will be added in a later phase.</p>
+    <h2>Scan History</h2>
+    <p>Recent URL analysis requests stored in SQLite.</p>
+
+    {% if records %}
+      <div class="history-table-wrapper">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>URL</th>
+              <th>Status</th>
+              <th>Confidence</th>
+              <th>Source</th>
+              <th>Matched List</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for record in records %}
+              <tr>
+                <td>{{ record.created_at }}</td>
+                <td class="history-url">{{ record.normalized_value }}</td>
+                <td>
+                  <span class="badge badge-{{ record.prediction }}">{{ record.prediction | upper }}</span>
+                </td>
+                <td>{{ "%.1f"|format(record.confidence * 100) }}%</td>
+                <td>{{ record.model_source.replace('_', ' ') | title }}</td>
+                <td>{{ record.matched_list | title if record.matched_list else "-" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>No scans have been recorded yet.</p>
+    {% endif %}
   </section>
 {% endblock %}
