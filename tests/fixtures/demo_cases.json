@@ -1,0 +1,35 @@
+{
+  "url_cases": [
+    {
+      "name": "trusted_whitelist_url",
+      "input": "https://www.google.com",
+      "expected_prediction": "legitimate"
+    },
+    {
+      "name": "known_blacklist_url",
+      "input": "http://secure-login-example.com",
+      "expected_prediction": "phishing"
+    },
+    {
+      "name": "heuristic_or_model_phishing_url",
+      "input": "http://very-secure-login-update.example.com",
+      "expected_prediction": "phishing"
+    }
+  ],
+  "email_cases": [
+    {
+      "name": "urgent_phishing_email",
+      "sender": "alerts@fake-bank.example",
+      "subject": "Urgent account verification",
+      "body": "Urgent action required. Click now: http://reset-account.example/login and open the attached .html form to avoid suspension. Reply-To: urgent@evil.example",
+      "expected_prediction": "phishing"
+    },
+    {
+      "name": "routine_legitimate_email",
+      "sender": "events@college.edu",
+      "subject": "Workshop schedule for tomorrow",
+      "body": "Please join the seminar hall at 10 AM. Agenda is attached in the student portal.",
+      "expected_prediction": "legitimate"
+    }
+  ]
+}

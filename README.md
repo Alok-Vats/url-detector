@@ -1,6 +1,6 @@
 # Cloud-Based AI System for Phishing URL and Email Detection
 
-Phase 1 provides the initial Flask setup, SQLite configuration, and a simple web UI for URL checking.
+This project detects phishing indicators in both URLs and email content using Flask, SQLite, rule-based analysis, and a trained URL classifier.
 
 ## Run locally
 
@@ -19,5 +19,14 @@ Open `http://127.0.0.1:5000`.
 - SQLite-backed whitelist and blacklist setup
 - URL feature extraction and rule-based analysis
 - Offline ML training pipeline for phishing URL classification
+- Rule-based phishing email analysis
+- Saved scan history and demo fixtures
 - JSON and HTML responses
 - Basic error handling
+
+## Report assets
+
+- `docs/architecture-diagram.md`
+- `docs/demo-cases.md`
+- `docs/report-assets.md`
+- `docs/screenshots/README.md`
