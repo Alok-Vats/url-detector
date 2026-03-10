@@ -1,0 +1,52 @@
+mProject/
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── config.py
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── result.html
+│   │   └── history.html
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       └── main.js
+│   ├── services/
+│   │   ├── url_service.py
+│   │   ├── email_service.py
+│   │   ├── prediction_service.py
+│   │   ├── blacklist_service.py
+│   │   └── whitelist_service.py
+│   ├── ml/
+│   │   ├── feature_extractor.py
+│   │   ├── model_loader.py
+│   │   ├── preprocess.py
+│   │   └── train_model.py
+│   ├── db/
+│   │   ├── database.py
+│   │   ├── models.py
+│   │   └── seed_data.py
+│   └── utils/
+│       ├── validators.py
+│       ├── url_parser.py
+│       └── helpers.py
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── phishing_urls.csv
+├── models/
+│   ├── phishing_url_model.pkl
+│   └── label_encoder.pkl
+├── notebooks/
+│   └── experimentation.ipynb
+├── tests/
+│   ├── test_routes.py
+│   ├── test_features.py
+│   ├── test_prediction.py
+│   └── test_services.py
+├── requirements.txt
+├── run.py
+└── README.md
+
