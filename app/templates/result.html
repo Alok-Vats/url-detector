@@ -11,6 +11,9 @@
       <span class="badge badge-{{ result.prediction }}">{{ result.prediction | upper }}</span>
     </p>
     <p><strong>Confidence:</strong> {{ "%.1f"|format(result.confidence * 100) }}%</p>
+    {% if result.matched_list %}
+      <p><strong>Matched List:</strong> {{ result.matched_list | title }}</p>
+    {% endif %}
 
     <h3>Reasons</h3>
     <ul>
@@ -21,10 +24,14 @@
 
     <h3>Technical Details</h3>
     <ul>
+      <li>Normalized URL: {{ result.details.normalized_url }}</li>
       <li>Hostname: {{ result.details.hostname }}</li>
       <li>Scheme: {{ result.details.scheme }}</li>
       <li>Length: {{ result.details.length }}</li>
       <li>HTTPS Enabled: {{ "Yes" if result.details.uses_https else "No" }}</li>
+      <li>Subdomains: {{ result.details.features.subdomain_count }}</li>
+      <li>Special Characters: {{ result.details.features.special_character_count }}</li>
+      <li>Suspicious Keyword Detected: {{ "Yes" if result.details.features.contains_suspicious_keyword else "No" }}</li>
     </ul>
 
     <a class="button-link" href="{{ url_for('main.index') }}">Analyze another URL</a>

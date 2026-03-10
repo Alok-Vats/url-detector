@@ -52,11 +52,8 @@ def init_db() -> None:
 
 
 def init_app(app) -> None:
-    """Register CLI-like hooks for automatic database initialization."""
-
-    @app.before_request
-    def ensure_database_ready():
-        """Make sure the schema exists before handling a request."""
+    """Initialize database state during application startup."""
+    with app.app_context():
         init_db()
 
 
@@ -66,3 +63,10 @@ def fetch_one(query: str, params: tuple = ()) -> sqlite3.Row | None:
     row = cursor.fetchone()
     cursor.close()
     return row
+
+
+def execute_query(query: str, params: tuple = ()) -> None:
+    """Execute a write query and commit it immediately."""
+    db = get_db()
+    db.execute(query, params)
+    db.commit()
