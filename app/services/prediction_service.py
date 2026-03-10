@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+import pandas as pd
+
+from app.ml.feature_extractor import extract_features
+from app.ml.model_loader import load_model
 from app.services.blacklist_service import get_blacklist_match
 from app.services.url_service import inspect_url
 from app.services.whitelist_service import get_whitelist_match
 
 
 def analyze_url(url: str) -> dict:
-    """Return a deterministic result using list matches and extracted features."""
+    """Return an analysis result using list matches, ML inference, or heuristics."""
     details = inspect_url(url)
     whitelist_match = get_whitelist_match(url)
     blacklist_match = get_blacklist_match(url)
@@ -33,6 +37,21 @@ def analyze_url(url: str) -> dict:
             details,
             matched_list="blacklist",
             matched_entry=blacklist_match,
+        )
+
+    model_result = _predict_with_model(url)
+    if model_result is not None:
+        prediction = model_result["prediction"]
+        confidence = model_result["confidence"]
+        reasons = details["reasons"] or ["Prediction generated from the trained URL model."]
+        return _build_response(
+            url,
+            prediction,
+            confidence,
+            reasons,
+            details,
+            matched_list=None,
+            matched_entry=None,
         )
 
     risk_reasons = details["reasons"]
@@ -68,3 +87,30 @@ def _build_response(
         "matched_list": matched_list,
         "matched_entry": matched_entry,
     }
+
+
+def _predict_with_model(url: str) -> dict | None:
+    """Run inference using the saved model artifact when available."""
+    try:
+        model_bundle = load_model()
+    except (OSError, ValueError):
+        return None
+
+    if model_bundle is None:
+        return None
+
+    features = extract_features(url)
+    feature_row = pd.DataFrame([features]).reindex(columns=model_bundle["feature_names"], fill_value=0)
+    model = model_bundle["model"]
+
+    prediction = str(model.predict(feature_row)[0])
+    probability_lookup = {}
+    if hasattr(model, "predict_proba"):
+        probabilities = model.predict_proba(feature_row)[0]
+        probability_lookup = {
+            label: float(probability)
+            for label, probability in zip(model.classes_, probabilities, strict=False)
+        }
+
+    confidence = probability_lookup.get(prediction, 0.5)
+    return {"prediction": prediction, "confidence": confidence}

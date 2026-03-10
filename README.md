@@ -17,6 +17,7 @@ Open `http://127.0.0.1:5000`.
 
 - Flask application factory
 - SQLite-backed whitelist and blacklist setup
-- Simple URL analysis form
+- URL feature extraction and rule-based analysis
+- Offline ML training pipeline for phishing URL classification
 - JSON and HTML responses
 - Basic error handling

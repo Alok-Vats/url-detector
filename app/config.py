@@ -16,6 +16,10 @@ class Config:
     DATABASE_PATH = os.getenv(
         "DATABASE_PATH", str(BASE_DIR / "instance" / "phishing_detector.sqlite3")
     )
+    MODEL_PATH = os.getenv("MODEL_PATH", str(BASE_DIR / "models" / "phishing_url_model.pkl"))
+    METRICS_PATH = os.getenv(
+        "METRICS_PATH", str(BASE_DIR / "models" / "phishing_url_model_metrics.json")
+    )
     DEBUG = False
     TESTING = False
 
