@@ -92,6 +92,7 @@ def _build_response(
 ) -> dict:
     """Format response payloads consistently for UI and API consumers."""
     return {
+        "input_type": "url",
         "url": url,
         "prediction": prediction,
         "confidence": confidence,

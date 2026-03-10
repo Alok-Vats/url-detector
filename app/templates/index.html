@@ -1,33 +1,83 @@
 {% extends "base.html" %}
 
-{% block title %}Check URL{% endblock %}
+{% block title %}Analyze Threats{% endblock %}
 
 {% block content %}
-  <section class="panel">
-    <h2>Analyze a URL</h2>
-    <p>Enter a URL to run an initial phishing risk check using whitelist, blacklist, and heuristic rules.</p>
+  <div class="panel-grid">
+    <section class="panel">
+      <h2>Analyze a URL</h2>
+      <p>Enter a URL to run phishing detection using whitelist, blacklist, extracted features, and the trained model.</p>
 
-    {% if errors %}
-      <div class="alert alert-error">
-        <ul>
-          {% for error in errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
+      {% if errors %}
+        <div class="alert alert-error">
+          <ul>
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
 
-    <form action="{{ url_for('main.analyze') }}" method="post" novalidate>
-      <label for="url">URL</label>
-      <input
-        id="url"
-        name="url"
-        type="url"
-        placeholder="https://example.com"
-        value="{{ submitted_url or '' }}"
-        required
-      />
-      <button type="submit">Analyze</button>
-    </form>
-  </section>
+      <form action="{{ url_for('main.analyze') }}" method="post" novalidate>
+        <label for="url">URL</label>
+        <input
+          id="url"
+          name="url"
+          type="url"
+          placeholder="https://example.com"
+          value="{{ submitted_url or '' }}"
+          required
+        />
+        <button type="submit">Analyze URL</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Analyze an Email</h2>
+      <p>Check a sender, subject, and message body using rule-based email phishing indicators.</p>
+
+      {% if email_errors %}
+        <div class="alert alert-error">
+          <ul>
+            {% for error in email_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <form action="{{ url_for('main.analyze_email') }}" method="post" novalidate>
+        <label for="sender">Sender</label>
+        <input
+          id="sender"
+          name="sender"
+          type="email"
+          placeholder="support@example.com"
+          value="{{ submitted_sender or '' }}"
+          required
+        />
+
+        <label for="subject">Subject</label>
+        <input
+          id="subject"
+          name="subject"
+          type="text"
+          placeholder="Verify your account"
+          value="{{ submitted_subject or '' }}"
+          required
+        />
+
+        <label for="body">Email Body</label>
+        <textarea
+          id="body"
+          name="body"
+          rows="7"
+          placeholder="Paste the email content here..."
+          required
+        >{{ submitted_body or '' }}</textarea>
+
+        <button type="submit">Analyze Email</button>
+      </form>
+    </section>
+  </div>
 {% endblock %}

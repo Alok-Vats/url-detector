@@ -51,17 +51,32 @@ body {
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
 }
 
+.panel-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
 form {
   display: grid;
   gap: 0.75rem;
 }
 
-input[type="url"] {
+input[type="url"],
+input[type="email"],
+input[type="text"],
+textarea {
   width: 100%;
   padding: 0.9rem 1rem;
   border: 1px solid var(--border);
   border-radius: 10px;
   font-size: 1rem;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 160px;
 }
 
 button,

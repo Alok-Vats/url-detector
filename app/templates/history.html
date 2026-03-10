@@ -13,6 +13,7 @@
           <thead>
             <tr>
               <th>Time</th>
+              <th>Type</th>
               <th>URL</th>
               <th>Status</th>
               <th>Confidence</th>
@@ -24,6 +25,7 @@
             {% for record in records %}
               <tr>
                 <td>{{ record.created_at }}</td>
+                <td>{{ record.input_type | title }}</td>
                 <td class="history-url">{{ record.normalized_value }}</td>
                 <td>
                   <span class="badge badge-{{ record.prediction }}">{{ record.prediction | upper }}</span>

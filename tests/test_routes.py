@@ -40,3 +40,25 @@ def test_history_route_returns_recent_scans():
     payload = response.get_json()
     assert payload["status"] == "success"
     assert len(payload["data"]) >= 1
+
+
+def test_analyze_email_route_saves_scan_history():
+    app = create_app("testing")
+
+    with app.test_client() as client:
+        response = client.post(
+            "/analyze-email",
+            data={
+                "sender": "alerts@fake-bank.example",
+                "subject": "Urgent account verification",
+                "body": "Click now: http://reset-account.example/login",
+            },
+        )
+
+        assert response.status_code == 200
+
+        with app.app_context():
+            history = get_scan_history()
+
+    assert history[0]["input_type"] == "email"
+    assert history[0]["input_value"] == "alerts@fake-bank.example"

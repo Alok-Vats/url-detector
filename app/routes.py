@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from flask import Blueprint, jsonify, render_template, request
 
+from app.services.email_service import analyze_email_content
 from app.services.history_service import get_scan_history, save_scan_result
 from app.services.prediction_service import analyze_url
-from app.utils.validators import validate_url_input
+from app.utils.validators import validate_email_input, validate_url_input
 
 
 main_bp = Blueprint("main", __name__)
@@ -19,7 +20,7 @@ def _prefers_json_response() -> bool:
 
 @main_bp.get("/")
 def index():
-    """Render the landing page with the URL analysis form."""
+    """Render the landing page with URL and email analysis forms."""
     return render_template("index.html")
 
 
@@ -49,13 +50,45 @@ def analyze():
 
 @main_bp.get("/history")
 def history():
-    """Render a page showing recent URL scans."""
+    """Render a page showing recent saved scans."""
     records = get_scan_history()
 
     if _prefers_json_response():
         return jsonify({"status": "success", "data": records}), 200
 
     return render_template("history.html", records=records)
+
+
+@main_bp.post("/analyze-email")
+def analyze_email():
+    """Handle UI form submissions and JSON requests for email analysis."""
+    payload = request.get_json(silent=True) if request.is_json else None
+    sender = str((payload or {}).get("sender", request.form.get("sender", ""))).strip()
+    subject = str((payload or {}).get("subject", request.form.get("subject", ""))).strip()
+    body = str((payload or {}).get("body", request.form.get("body", ""))).strip()
+
+    errors = validate_email_input(sender, subject, body)
+    if errors:
+        if _prefers_json_response():
+            return jsonify({"status": "error", "errors": errors}), 400
+
+        return (
+            render_template(
+                "index.html",
+                email_errors=errors,
+                submitted_sender=sender,
+                submitted_subject=subject,
+                submitted_body=body,
+            ),
+            400,
+        )
+
+    result = analyze_email_content(sender, subject, body)
+    save_scan_result(result)
+    if _prefers_json_response():
+        return jsonify({"status": "success", "data": result}), 200
+
+    return render_template("result.html", result=result)
 
 
 @main_bp.get("/health")

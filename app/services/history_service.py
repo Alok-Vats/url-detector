@@ -10,6 +10,13 @@ from app.db.database import execute_query, fetch_all
 def save_scan_result(result: dict) -> None:
     """Persist a completed scan result for later review."""
     details = result.get("details", {})
+    input_type = result.get("input_type", "url")
+    input_value = result.get("url") if input_type == "url" else result.get("sender", "")
+    normalized_value = (
+        details.get("normalized_url", input_value)
+        if input_type == "url"
+        else details.get("normalized_sender", input_value)
+    )
     execute_query(
         """
         INSERT INTO scan_history (
@@ -26,9 +33,9 @@ def save_scan_result(result: dict) -> None:
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
-            "url",
-            result["url"],
-            details.get("normalized_url", result["url"]),
+            input_type,
+            input_value,
+            normalized_value,
             result["prediction"],
             float(result["confidence"]),
             result.get("matched_list"),
