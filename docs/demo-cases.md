@@ -1,6 +1,6 @@
 # Demo Cases
 
-These cases are stored in [tests/fixtures/demo_cases.json](/home/n0b0dy/Desktop/mProject/tests/fixtures/demo_cases.json) and validated by automated tests.
+These cases are stored in [tests/fixtures/demo_cases.json](/home/user/Desktop/mProject/tests/fixtures/demo_cases.json) and validated by automated tests.
 
 ## URL cases
 

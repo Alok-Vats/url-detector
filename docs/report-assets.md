@@ -4,9 +4,9 @@ This folder contains submission-ready support material for the project report.
 
 ## Included
 
-- [architecture-diagram.md](/home/n0b0dy/Desktop/mProject/docs/architecture-diagram.md): Mermaid system diagram
-- [demo-cases.md](/home/n0b0dy/Desktop/mProject/docs/demo-cases.md): documented phishing vs legitimate examples
-- [screenshots/README.md](/home/n0b0dy/Desktop/mProject/docs/screenshots/README.md): screenshot checklist and filenames
+- [architecture-diagram.md](/home/user/Desktop/mProject/docs/architecture-diagram.md): Mermaid system diagram
+- [demo-cases.md](/home/user/Desktop/mProject/docs/demo-cases.md): documented phishing vs legitimate examples
+- [screenshots/README.md](/home/user/Desktop/mProject/docs/screenshots/README.md): screenshot checklist and filenames
 
 ## Suggested screenshots
 

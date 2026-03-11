@@ -1,6 +1,5 @@
 # Architecture Diagram
 
-This Mermaid diagram can be pasted directly into GitHub, Mermaid Live, or a report tool that supports Mermaid.
 
 ```mermaid
 flowchart TD
